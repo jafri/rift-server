@@ -3,9 +3,11 @@ import path from 'path';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import routes from './routes';
+import helmet from 'helmet'
 
 const app = express();
 app.disable('x-powered-by');
+app.use(helmet())
 
 // View engine setup
 app.set('views', path.join(__dirname, '../views'));
