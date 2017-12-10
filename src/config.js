@@ -1,8 +1,8 @@
 module.exports = {
-    username = "",
-    password = "",
-    host = "", 
-    port = "",
-    database = "",
-    ssl = false
+    user: "user",
+    password: "pass",
+    host: 'localhost', 
+    port: 5432,
+    database: 'anofron',
+    ssl: false
 };
