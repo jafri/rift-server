@@ -4,10 +4,10 @@ import logger from 'morgan';
 import bodyParser from 'body-parser';
 import routes from './routes';
 import massive from 'massive';
-import config from './config';
+import config from '../model/config';
 
 const app = express();
-app.disable('x-powered-by'); 
+app.disable('x-powered-by');
 
 // View engine setup
 app.set('views', path.join(__dirname, '../views'));
@@ -15,8 +15,9 @@ app.set('view engine', 'pug');
 
 
 // Setup the database
-var db = await massive(config);
-app.set('db', db);
+massive(config).then(db => {
+  app.set('db', db)
+});
 
 app.use(logger('dev', {
   skip: () => app.get('env') === 'test'

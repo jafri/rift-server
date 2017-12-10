@@ -33,4 +33,10 @@ routes.get('/list', (req, res, next) => {
   res.render('index', { title });
 });
 
+routes.get('/test', (req, res, next) => {
+  console.log("TEST ROUTE") // eslint-disable-line no-console
+  console.log(req.app.get('db')) // eslint-disable-line no-console
+
+  next()
+});
 export default routes;
