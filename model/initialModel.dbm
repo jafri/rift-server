@@ -3,15 +3,16 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.1-alpha1" last-position="35,382" last-zoom="1"
+<dbmodel pgmodeler-ver="0.9.1-alpha1" last-position="0,267" last-zoom="1"
 	 default-schema="public" default-owner="postgres">
 <role name="SynopticManager"
       login="true"
       encrypted="true"
       password="qpiGdY+1a9B%EVC">
+	<prepended-sql><![CDATA[CREATE EXTENSION IF NOT EXISTS "uuid-ossp";]]></prepended-sql>
 </role>
 
-<database name="new_database">
+<database name="anofron">
 	<role name="&quot;SynopticManager&quot;"/>
 </database>
 
@@ -19,10 +20,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </schema>
 
 <table name="Patients">
-	<schema name="node"/>
+	<schema name="public"/>
 	<role name="&quot;SynopticManager&quot;"/>
 	<position x="353" y="637.75"/>
-	<column name="patientID" not-null="true">
+	<column name="patientID" not-null="true" default-value="uuid_generate_v1mc()">
 		<type name="uuid" length="0"/>
 	</column>
 	<column name="firstName">
@@ -52,20 +53,16 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="dateCreated" default-value="NOW()">
 		<type name="timestamp" length="0"/>
 	</column>
-	<constraint name="Patients_pk" type="pk-constr" table="node.&quot;Patients&quot;">
+	<constraint name="Patients_pk" type="pk-constr" table="public.&quot;Patients&quot;">
 		<columns names="patientID" ref-type="src-columns"/>
 	</constraint>
 </table>
 
-<schema name="node" rect-visible="true" fill-color="#e1e1e1">
-	<role name="postgres"/>
-</schema>
-
 <table name="Physicians">
-	<schema name="node"/>
+	<schema name="public"/>
 	<role name="&quot;SynopticManager&quot;"/>
 	<position x="353" y="519.5"/>
-	<column name="physicianID" not-null="true">
+	<column name="physicianID" not-null="true" default-value="uuid_generate_v1mc()">
 		<type name="uuid" length="0"/>
 	</column>
 	<column name="firstName" not-null="true">
@@ -80,13 +77,13 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="dateCreated" not-null="true" default-value="NOW()">
 		<type name="timestamp" length="0"/>
 	</column>
-	<constraint name="Physicians_pk" type="pk-constr" table="node.&quot;Physicians&quot;">
+	<constraint name="Physicians_pk" type="pk-constr" table="public.&quot;Physicians&quot;">
 		<columns names="physicianID" ref-type="src-columns"/>
 	</constraint>
 </table>
 
 <table name="ReportTemplates">
-	<schema name="node"/>
+	<schema name="public"/>
 	<role name="&quot;SynopticManager&quot;"/>
 	<position x="353" y="316"/>
 	<column name="reportTemplateID" not-null="true">
@@ -101,16 +98,16 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="dateCreated" default-value="NOW()">
 		<type name="timestamp" length="0"/>
 	</column>
-	<constraint name="Procedures_pk" type="pk-constr" table="node.&quot;ReportTemplates&quot;">
+	<constraint name="Procedures_pk" type="pk-constr" table="public.&quot;ReportTemplates&quot;">
 		<columns names="reportTemplateID" ref-type="src-columns"/>
 	</constraint>
 </table>
 
 <table name="PhysicianAuthentication">
-	<schema name="node"/>
+	<schema name="public"/>
 	<role name="&quot;SynopticManager&quot;"/>
 	<position x="353" y="412.25"/>
-	<column name="physicianID" not-null="true">
+	<column name="physicianID" not-null="true" default-value="uuid_generate_v1mc()">
 		<type name="uuid" length="0"/>
 	</column>
 	<column name="username" not-null="true">
@@ -122,16 +119,16 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="dateCreated" not-null="true" default-value="NOW()">
 		<type name="timestamp" length="0"/>
 	</column>
-	<constraint name="PhysicianAuthentication_pk" type="pk-constr" table="node.&quot;PhysicianAuthentication&quot;">
+	<constraint name="PhysicianAuthentication_pk" type="pk-constr" table="public.&quot;PhysicianAuthentication&quot;">
 		<columns names="physicianID" ref-type="src-columns"/>
 	</constraint>
 </table>
 
 <table name="PatientReports">
-	<schema name="node"/>
+	<schema name="public"/>
 	<role name="&quot;SynopticManager&quot;"/>
 	<position x="353" y="800"/>
-	<column name="patientReportID" not-null="true">
+	<column name="patientReportID" not-null="true" default-value="uuid_generate_v1mc()">
 		<type name="uuid" length="0"/>
 	</column>
 	<column name="reportType" not-null="true">
@@ -149,12 +146,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="dateCreated" default-value="NOW()">
 		<type name="timestamp" length="0"/>
 	</column>
-	<constraint name="Reports_pk" type="pk-constr" table="node.&quot;PatientReports&quot;">
+	<constraint name="Reports_pk" type="pk-constr" table="public.&quot;PatientReports&quot;">
 		<columns names="patientReportID" ref-type="src-columns"/>
 	</constraint>
 </table>
 
-<index name="usernameIndex" table="node.&quot;PhysicianAuthentication&quot;"
+<index name="usernameIndex" table="public.&quot;PhysicianAuthentication&quot;"
 	 concurrent="false" unique="true" fast-update="false" buffering="false"
 	 index-type="btree" factor="0">
 		<idxelement use-sorting="false">
@@ -162,7 +159,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		</idxelement>
 </index>
 
-<index name="physicianIndex" table="node.&quot;Physicians&quot;"
+<index name="physicianIndex" table="public.&quot;Physicians&quot;"
 	 concurrent="false" unique="false" fast-update="false" buffering="false"
 	 index-type="btree" factor="0">
 		<idxelement use-sorting="false">

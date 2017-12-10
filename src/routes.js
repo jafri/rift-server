@@ -33,9 +33,25 @@ routes.get('/list', (req, res, next) => {
   res.render('index', { title });
 });
 
-routes.get('/test', (req, res, next) => {
-  console.log("TEST ROUTE") // eslint-disable-line no-console
-  console.log(req.app.get('db')) // eslint-disable-line no-console
+routes.get('/test', async (req, res, next) => {
+  let db = req.app.get('db');
+
+  if(db === null){
+    next()
+  }
+
+  try{
+    await db.query("INSERT INTO physician_authentication (username, password) VALUES (${username}, ${password})", {
+      username: "test7",
+      password: "omg it works"
+    });
+
+    let tests = await db.query("SELECT * from physician_authentication WHERE username = ${username}", { username: "test7" })
+
+    console.log("Passed: ", tests); // eslint-disable-line no-console
+  } catch (err) {
+    console.log("Error: ", err); // eslint-disable-line no-console
+  }
 
   next()
 });

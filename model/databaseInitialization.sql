@@ -6,10 +6,18 @@
 
 -- object: "SynopticManager" | type: ROLE --
 -- DROP ROLE IF EXISTS "SynopticManager";
+
+-- Prepended SQL commands --
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- ddl-end --
+
+
+-- object: "SynopticManager" | type: ROLE --
+-- DROP ROLE IF EXISTS "SynopticManager";
 DO $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'SynopticManager') THEN
-        CREATE ROLE "SynopticManager" WITH
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'synoptic_manager') THEN
+        CREATE ROLE "synoptic_manager" WITH
 			LOGIN
 			ENCRYPTED PASSWORD 'qpiGdY+1a9B%EVC';
     END IF;
@@ -17,120 +25,127 @@ END
 $$;
 -- ddl-end --
 
-
 -- Database creation must be done outside an multicommand file.
 -- These commands were put in this file only for convenience.
--- -- object: new_database | type: DATABASE --
--- -- DROP DATABASE IF EXISTS new_database;
--- CREATE DATABASE new_database
+-- -- object: anofron | type: DATABASE --
+-- -- DROP DATABASE IF EXISTS anofron;
+-- CREATE DATABASE anofron
 -- 	OWNER = "SynopticManager"
 -- ;
 -- -- ddl-end --
 --
 
--- object: node | type: SCHEMA --
--- DROP SCHEMA IF EXISTS node CASCADE;
-CREATE SCHEMA node;
--- ddl-end --
-ALTER SCHEMA node OWNER TO "SynopticManager";
--- ddl-end --
-
-SET search_path TO pg_catalog,public,node;
--- ddl-end --
-
--- object: node."Patients" | type: TABLE --
--- DROP TABLE IF EXISTS node."Patients" CASCADE;
-CREATE TABLE node."Patients"(
-	"patientID" uuid NOT NULL,
-	"firstName" text,
-	"lastName" text NOT NULL,
-	"middleName" text,
-	"primaryPhysician" uuid[],
-	"reportingPhysician" uuid[],
-	"personalHealthCareNumber" text,
-	"dateOfBirth" date,
-	"researchConsent" boolean,
-	"dateCreated" timestamp DEFAULT NOW(),
-	CONSTRAINT "Patients_pk" PRIMARY KEY ("patientID")
+-- object: public.patients | type: TABLE --
+-- DROP TABLE IF EXISTS public.patients CASCADE;
+CREATE TABLE public.patients(
+	patient_id uuid NOT NULL DEFAULT uuid_generate_v1mc(),
+	first_name text,
+	last_name text NOT NULL,
+	middle_name text,
+	primary_physician uuid[],
+	reporting_physician uuid[],
+	personal_health_care_number text,
+	date_of_birth date,
+	research_consent boolean,
+	date_created timestamp DEFAULT now(),
+	CONSTRAINT patients_pk PRIMARY KEY (patient_id)
 
 );
 -- ddl-end --
-ALTER TABLE node."Patients" OWNER TO "SynopticManager";
+ALTER TABLE public.patients OWNER TO synoptic_manager;
 -- ddl-end --
 
--- object: node."Physicians" | type: TABLE --
--- DROP TABLE IF EXISTS node."Physicians" CASCADE;
-CREATE TABLE node."Physicians"(
-	"physicianID" uuid NOT NULL,
-	"firstName" text NOT NULL,
-	"lastName" text NOT NULL,
-	"middleName" text,
-	"dateCreated" timestamp NOT NULL DEFAULT NOW(),
-	CONSTRAINT "Physicians_pk" PRIMARY KEY ("physicianID")
+-- object: public.physicians | type: TABLE --
+-- DROP TABLE IF EXISTS public.physicians CASCADE;
+CREATE TABLE public.physicians(
+	physician_id uuid NOT NULL DEFAULT uuid_generate_v1mc(),
+	first_name text NOT NULL,
+	last_name text NOT NULL,
+	middle_name text,
+	date_created timestamp NOT NULL DEFAULT now(),
+	CONSTRAINT physicians_pk PRIMARY KEY (physician_id)
 
 );
 -- ddl-end --
-ALTER TABLE node."Physicians" OWNER TO "SynopticManager";
+ALTER TABLE public.physicians OWNER TO synoptic_manager;
 -- ddl-end --
 
--- object: node."ReportTemplates" | type: TABLE --
--- DROP TABLE IF EXISTS node."ReportTemplates" CASCADE;
-CREATE TABLE node."ReportTemplates"(
-	"reportTemplateID" integer NOT NULL,
+-- object: public.report_templates | type: TABLE --
+-- DROP TABLE IF EXISTS public.report_templates CASCADE;
+CREATE TABLE public.report_templates(
+	report_template_id integer NOT NULL,
 	name text NOT NULL,
-	"templateJSON" jsonb NOT NULL,
-	"dateCreated" timestamp DEFAULT NOW(),
-	CONSTRAINT "Procedures_pk" PRIMARY KEY ("reportTemplateID")
+	template_json jsonb NOT NULL,
+	date_created timestamp DEFAULT now(),
+	CONSTRAINT procedures_pk PRIMARY KEY (report_template_id)
 
 );
 -- ddl-end --
-ALTER TABLE node."ReportTemplates" OWNER TO "SynopticManager";
+ALTER TABLE public.report_templates OWNER TO synoptic_manager;
 -- ddl-end --
 
--- object: node."PhysicianAuthentication" | type: TABLE --
--- DROP TABLE IF EXISTS node."PhysicianAuthentication" CASCADE;
-CREATE TABLE node."PhysicianAuthentication"(
-	"physicianID" uuid NOT NULL,
+-- object: public.physician_authentication | type: TABLE --
+-- DROP TABLE IF EXISTS public.physician_authentication CASCADE;
+CREATE TABLE public.physician_authentication(
+	physician_id uuid NOT NULL DEFAULT uuid_generate_v1mc(),
 	username text NOT NULL,
 	password text NOT NULL,
-	"dateCreated" timestamp NOT NULL DEFAULT NOW(),
-	CONSTRAINT "PhysicianAuthentication_pk" PRIMARY KEY ("physicianID")
+	date_created timestamp NOT NULL DEFAULT now(),
+	CONSTRAINT physician_authentication_pk PRIMARY KEY (physician_id)
 
 );
 -- ddl-end --
-ALTER TABLE node."PhysicianAuthentication" OWNER TO "SynopticManager";
+ALTER TABLE public.physician_authentication OWNER TO synoptic_manager;
 -- ddl-end --
 
--- object: node."PatientReports" | type: TABLE --
--- DROP TABLE IF EXISTS node."PatientReports" CASCADE;
-CREATE TABLE node."PatientReports"(
-	"patientReportID" uuid NOT NULL,
-	"reportType" text NOT NULL,
-	"patientID" uuid NOT NULL,
-	"physicianID" uuid NOT NULL,
-	"formJSON" jsonb NOT NULL,
-	"dateCreated" timestamp DEFAULT NOW(),
-	CONSTRAINT "Reports_pk" PRIMARY KEY ("patientReportID")
+-- object: public.patient_reports | type: TABLE --
+-- DROP TABLE IF EXISTS public.patient_reports CASCADE;
+CREATE TABLE public.patient_reports(
+	patient_report_id uuid NOT NULL DEFAULT uuid_generate_v1mc(),
+	report_type text NOT NULL,
+	patient_id uuid NOT NULL,
+	physician_id uuid NOT NULL,
+	form_json jsonb NOT NULL,
+	date_created timestamp DEFAULT now(),
+	CONSTRAINT reports_pk PRIMARY KEY (patient_report_id)
 
 );
 -- ddl-end --
-ALTER TABLE node."PatientReports" OWNER TO "SynopticManager";
+ALTER TABLE public.patient_reports OWNER TO synoptic_manager;
 -- ddl-end --
 
--- object: "usernameIndex" | type: INDEX --
--- DROP INDEX IF EXISTS node."usernameIndex" CASCADE;
-CREATE UNIQUE INDEX "usernameIndex" ON node."PhysicianAuthentication"
+-- object: username_index | type: INDEX --
+-- DROP INDEX IF EXISTS public.username_index CASCADE;
+CREATE UNIQUE INDEX username_index ON public.physician_authentication
 	USING btree
 	(
 	  username
-	);
+	)
+	WITH (FILLFACTOR = 90);
 -- ddl-end --
 
--- object: "physicianIndex" | type: INDEX --
--- DROP INDEX IF EXISTS node."physicianIndex" CASCADE;
-CREATE INDEX "physicianIndex" ON node."Physicians"
+-- object: physician_index | type: INDEX --
+-- DROP INDEX IF EXISTS public.physician_index CASCADE;
+CREATE INDEX physician_index ON public.physicians
 	USING btree
 	(
-	  "physicianID"
-	);
+	  physician_id
+	)
+	WITH (FILLFACTOR = 90);
 -- ddl-end --
+
+-- object: patients_fk | type: CONSTRAINT --
+-- ALTER TABLE public.patient_reports DROP CONSTRAINT IF EXISTS patients_fk CASCADE;
+ALTER TABLE public.patient_reports ADD CONSTRAINT patients_fk FOREIGN KEY (patient_id)
+REFERENCES public.patients (patient_id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- ddl-end --
+
+-- object: physician_pk | type: CONSTRAINT --
+-- ALTER TABLE public.patient_reports DROP CONSTRAINT IF EXISTS physician_pk CASCADE;
+ALTER TABLE public.patient_reports ADD CONSTRAINT physician_pk FOREIGN KEY (physician_id)
+REFERENCES public.physicians (physician_id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- ddl-end --
+
+
