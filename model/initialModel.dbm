@@ -3,18 +3,25 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.1-alpha1" last-position="0,2" last-zoom="1"
+<dbmodel pgmodeler-ver="0.9.1-alpha1" last-position="35,382" last-zoom="1"
 	 default-schema="public" default-owner="postgres">
+<role name="SynopticManager"
+      login="true"
+      encrypted="true"
+      password="qpiGdY+1a9B%EVC">
+</role>
+
 <database name="new_database">
+	<role name="&quot;SynopticManager&quot;"/>
 </database>
 
 <schema name="public" fill-color="#e1e1e1" sql-disabled="true">
 </schema>
 
 <table name="Patients">
-	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="52" y="102"/>
+	<schema name="node"/>
+	<role name="&quot;SynopticManager&quot;"/>
+	<position x="353" y="637.75"/>
 	<column name="patientID" not-null="true">
 		<type name="uuid" length="0"/>
 	</column>
@@ -42,22 +49,22 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="researchConsent">
 		<type name="boolean" length="0"/>
 	</column>
-	<column name="dateCreated" default-value="now()">
-		<type name="date" length="0"/>
+	<column name="dateCreated" default-value="NOW()">
+		<type name="timestamp" length="0"/>
 	</column>
-	<constraint name="Patients_pk" type="pk-constr" table="public.&quot;Patients&quot;">
+	<constraint name="Patients_pk" type="pk-constr" table="node.&quot;Patients&quot;">
 		<columns names="patientID" ref-type="src-columns"/>
 	</constraint>
 </table>
 
-<schema name="test" rect-visible="true" fill-color="#e1e1e1">
+<schema name="node" rect-visible="true" fill-color="#e1e1e1">
 	<role name="postgres"/>
 </schema>
 
 <table name="Physicians">
-	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="339" y="170"/>
+	<schema name="node"/>
+	<role name="&quot;SynopticManager&quot;"/>
+	<position x="353" y="519.5"/>
 	<column name="physicianID" not-null="true">
 		<type name="uuid" length="0"/>
 	</column>
@@ -70,18 +77,18 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="middleName">
 		<type name="text" length="0"/>
 	</column>
-	<column name="dateCreated" default-value="now()">
-		<type name="date" length="0"/>
+	<column name="dateCreated" not-null="true" default-value="NOW()">
+		<type name="timestamp" length="0"/>
 	</column>
-	<constraint name="Physicians_pk" type="pk-constr" table="public.&quot;Physicians&quot;">
+	<constraint name="Physicians_pk" type="pk-constr" table="node.&quot;Physicians&quot;">
 		<columns names="physicianID" ref-type="src-columns"/>
 	</constraint>
 </table>
 
 <table name="ReportTemplates">
-	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="337" y="299"/>
+	<schema name="node"/>
+	<role name="&quot;SynopticManager&quot;"/>
+	<position x="353" y="316"/>
 	<column name="reportTemplateID" not-null="true">
 		<type name="integer" length="0"/>
 	</column>
@@ -91,18 +98,18 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="templateJSON" not-null="true">
 		<type name="jsonb" length="0"/>
 	</column>
-	<column name="dateCreated" default-value="now()">
-		<type name="date" length="0"/>
+	<column name="dateCreated" default-value="NOW()">
+		<type name="timestamp" length="0"/>
 	</column>
-	<constraint name="Procedures_pk" type="pk-constr" table="public.&quot;ReportTemplates&quot;">
+	<constraint name="Procedures_pk" type="pk-constr" table="node.&quot;ReportTemplates&quot;">
 		<columns names="reportTemplateID" ref-type="src-columns"/>
 	</constraint>
 </table>
 
 <table name="PhysicianAuthentication">
-	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="338" y="64"/>
+	<schema name="node"/>
+	<role name="&quot;SynopticManager&quot;"/>
+	<position x="353" y="412.25"/>
 	<column name="physicianID" not-null="true">
 		<type name="uuid" length="0"/>
 	</column>
@@ -112,15 +119,18 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="password" not-null="true">
 		<type name="text" length="0"/>
 	</column>
-	<constraint name="PhysicianAuthentication_pk" type="pk-constr" table="public.&quot;PhysicianAuthentication&quot;">
+	<column name="dateCreated" not-null="true" default-value="NOW()">
+		<type name="timestamp" length="0"/>
+	</column>
+	<constraint name="PhysicianAuthentication_pk" type="pk-constr" table="node.&quot;PhysicianAuthentication&quot;">
 		<columns names="physicianID" ref-type="src-columns"/>
 	</constraint>
 </table>
 
 <table name="PatientReports">
-	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="74" y="301"/>
+	<schema name="node"/>
+	<role name="&quot;SynopticManager&quot;"/>
+	<position x="353" y="800"/>
 	<column name="patientReportID" not-null="true">
 		<type name="uuid" length="0"/>
 	</column>
@@ -136,9 +146,28 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="formJSON" not-null="true">
 		<type name="jsonb" length="0"/>
 	</column>
-	<constraint name="Reports_pk" type="pk-constr" table="public.&quot;PatientReports&quot;">
+	<column name="dateCreated" default-value="NOW()">
+		<type name="timestamp" length="0"/>
+	</column>
+	<constraint name="Reports_pk" type="pk-constr" table="node.&quot;PatientReports&quot;">
 		<columns names="patientReportID" ref-type="src-columns"/>
 	</constraint>
 </table>
+
+<index name="usernameIndex" table="node.&quot;PhysicianAuthentication&quot;"
+	 concurrent="false" unique="true" fast-update="false" buffering="false"
+	 index-type="btree" factor="0">
+		<idxelement use-sorting="false">
+			<column name="username"/>
+		</idxelement>
+</index>
+
+<index name="physicianIndex" table="node.&quot;Physicians&quot;"
+	 concurrent="false" unique="false" fast-update="false" buffering="false"
+	 index-type="btree" factor="0">
+		<idxelement use-sorting="false">
+			<column name="&quot;physicianID&quot;"/>
+		</idxelement>
+</index>
 
 </dbmodel>
