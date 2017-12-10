@@ -63,3 +63,7 @@ typings/
 # Custom
 .idea
 dist
+
+src/config.js
+
+src/config.js
