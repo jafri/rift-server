@@ -15,18 +15,8 @@ app.set('view engine', 'pug');
 
 
 // Setup the database
-/*var connectionString = "postgres://" + 
-    config.username + ":" +
-    config.password + "@" +
-    config.host + ":" + 
-    config.port + "/" +
-    config.database + "?ssl="
-    config.ssl.toString();
-*/
-//var massiveInstance = massive.connectSync({connectionString: connectionString});
-
-massive(config).then(db => {});
-// app.set('db', massiveInstance);
+var db = await massive(config);
+app.set('db', db);
 
 app.use(logger('dev', {
   skip: () => app.get('env') === 'test'
