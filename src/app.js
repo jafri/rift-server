@@ -3,13 +3,27 @@ import path from 'path';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import routes from './routes';
+import massive from 'massive';
+import config from './config';
 
 const app = express();
-app.disable('x-powered-by');
+app.disable('x-powered-by'); 
 
 // View engine setup
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'pug');
+
+
+// Setup the database
+var connectionString = "postgres://" + 
+    config.username + ":" +
+    config.password + "@" +
+    config.host + ":" + 
+    config.port + "/" +
+    config.database + "?ssl="
+    config.ssl.toString();
+var massiveInstance = massive.connectSync({connectionString: connectionString});
+app.set('db', massiveInstance);
 
 app.use(logger('dev', {
   skip: () => app.get('env') === 'test'
