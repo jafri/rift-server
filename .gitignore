@@ -64,6 +64,4 @@ typings/
 .idea
 dist
 
-src/config.js
-
-src/config.js
+model/config.json
