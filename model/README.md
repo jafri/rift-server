@@ -5,7 +5,7 @@ All development on the model will be done in 'initialization/src'. The preinitia
 
 There are seperate folder for functions, indexes and tables. If you make any changes using pgModeler, find the change and place it in the correct folder/file. This is necessary as it is a nightmare to debug a huge file.
 
-To compile into single SQL file run `node initializeDB`, the output SQL is at 'initialization/dist'
+To compile into single SQL file run `npm run initializeDB`, the output SQL is at 'initialization/dist'
 
 
 The following config lays out the current settings
