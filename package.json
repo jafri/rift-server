@@ -18,7 +18,7 @@
     "build": "npm run clean && mkdir -p dist && babel src -s -D -d dist",
     "test": "jest --watch",
     "lint": "esw -w src test",
-    "initializeDB": "node model/initializeDatabase.js"
+    "initializeDB": "bash model/initializeDatabase.sh"
   },
   "keywords": [
     "express",
