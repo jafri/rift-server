@@ -7,10 +7,15 @@ declare
 begin
   select physicians.* into physician
   from ehr.physician_login as physicians
-  where physicians.email = $1;
+  where physicians.username = $1;
 
   if physician.password = $2 then
-    return ('physician', physician.physician_id)::ehr.physician_jwt_token;
+    return (
+      'physician',
+      86400,
+      physician.physician_id,
+      physician.username
+    )::ehr.physician_jwt_token;
   else
     return null;
   end if;

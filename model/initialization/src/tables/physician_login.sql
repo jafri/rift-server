@@ -11,7 +11,9 @@ CREATE TABLE ehr.physician_login(
 -- object: ehr.physician_jwt_token | type: Composite Type --
 create type ehr.physician_jwt_token as (
   role text,
-  physician_id integer
+  expiry integer,
+  physician_id integer,
+  username text
 );
 -- ddl-end --
 
