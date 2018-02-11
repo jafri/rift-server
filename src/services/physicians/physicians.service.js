@@ -1,6 +1,6 @@
 // Initializes the `users` service on path `/users`
 const createService = require('feathers-nedb');
-const createModel = require('../../models/users.model');
+const createModel = require('../../models/physicians.model');
 const hooks = require('./physicians.hooks');
 
 module.exports = function (app) {

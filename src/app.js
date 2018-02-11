@@ -1,4 +1,3 @@
-const path = require('path');
 const compress = require('compression');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -9,18 +8,25 @@ const configuration = require('@feathersjs/configuration');
 const express = require('@feathersjs/express');
 const socketio = require('@feathersjs/socketio');
 
-
 const middleware = require('./middleware');
 const services = require('./services');
 const appHooks = require('./app.hooks');
 const channels = require('./channels');
 
 const authentication = require('./authentication');
+const knex = require('knex');
 
 const app = express(feathers());
 
 // Load app configuration
 app.configure(configuration());
+
+// Database connector
+console.log(app.get("database"));
+const db = knex(app.get("database"));
+app.set('db', db);
+
+
 // Enable CORS, security, compression, favicon and body parsing
 app.use(cors());
 app.use(helmet());
@@ -39,6 +45,10 @@ app.configure(authentication);
 app.configure(services);
 // Set up event channels (see channels.js)
 app.configure(channels);
+
+
+
+
 
 // Configure a middleware for the error handler
 app.use(express.errorHandler({ logger }));

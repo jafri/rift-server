@@ -40,9 +40,13 @@
     "@feathersjs/socketio": "^3.0.1",
     "compression": "^1.7.1",
     "cors": "^2.8.4",
+    "feathers-knex": "^3.0.2",
     "feathers-nedb": "^3.0.0",
     "helmet": "^3.9.0",
+    "knex": "^0.14.3",
     "nedb": "^1.8.0",
+    "nodemon": "^1.14.12",
+    "pg": "^7.4.1",
     "serve-favicon": "^2.4.5",
     "winston": "^2.4.0"
   },
