@@ -1,15 +1,15 @@
 {
-  "name": "feathers-chat",
-  "description": "A Feathers chat application",
+  "name": "synoptic-server",
+  "description": "Synoptic Server For Reporting",
   "version": "0.0.0",
   "homepage": "https://feathersjs.com",
   "main": "src",
   "keywords": [
-    "feathers"
+    "synoptic"
   ],
   "author": {
-    "name": "David Luecke",
-    "email": "daff@neyeon.com"
+    "name": "Syed Jafri",
+    "email": "syed.jafri2@ucalgary.ca"
   },
   "contributors": [],
   "bugs": {},

@@ -23,7 +23,7 @@
       "local"
     ],
     "path": "/authentication",
-    "service": "users",
+    "service": "physicians",
     "jwt": {
       "header": {
         "typ": "access"
@@ -35,8 +35,8 @@
       "expiresIn": "1d"
     },
     "local": {
-      "entity": "user",
-      "usernameField": "email",
+      "entity": "physician",
+      "usernameField": "username",
       "passwordField": "password"
     }
   }

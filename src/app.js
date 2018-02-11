@@ -14,18 +14,12 @@ const appHooks = require('./app.hooks');
 const channels = require('./channels');
 
 const authentication = require('./authentication');
-const knex = require('knex');
+const database = require('./database')
 
 const app = express(feathers());
 
 // Load app configuration
 app.configure(configuration());
-
-// Database connector
-console.log(app.get("database"));
-const db = knex(app.get("database"));
-app.set('db', db);
-
 
 // Enable CORS, security, compression, favicon and body parsing
 app.use(cors());
@@ -38,6 +32,9 @@ app.use(express.urlencoded({ extended: true }));
 app.configure(express.rest());
 app.configure(socketio());
 
+// Configure the DATABASE
+app.configure(database)
+
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
 app.configure(authentication);
@@ -45,10 +42,6 @@ app.configure(authentication);
 app.configure(services);
 // Set up event channels (see channels.js)
 app.configure(channels);
-
-
-
-
 
 // Configure a middleware for the error handler
 app.use(express.errorHandler({ logger }));
