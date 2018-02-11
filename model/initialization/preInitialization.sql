@@ -2,7 +2,7 @@
 -- Model Author: Anofron ---
 -- From the command line, connect using a superuser --
 -- Usage: psql -d postgres -U superuser --
-
+-- Initializes Roles and Initializes Database --
 
 -------------------------------------
 --------- Drop anofron DB -----------

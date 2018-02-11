@@ -86,5 +86,4 @@ exports.build = function(){
   return sql;
 };
 
-
 this.build();
