@@ -16,10 +16,6 @@ grant select, update, insert, delete on table ehr.patient to physician;
 -- Patient Report TABLE: Access to physicians --
 grant select, update, insert, delete on table ehr.patient_report to physician;
 
--- Report Template TABLE: Access to physicians --
-grant select, update, insert, delete on table ehr.report_template to physician;
-
-
 -- FUNCTIONS Permissions on TABLE --
 grant execute on function ehr.authenticate_physician(text, text) to anonymous, physician, anofron_manager;
 grant execute on function ehr.current_physician to physician, anofron_manager;
@@ -32,8 +28,6 @@ alter table ehr.physician enable row level security;
 alter table ehr.physician_login enable row level security;
 alter table ehr.patient enable row level security;
 alter table ehr.patient_report enable row level security;
-alter table ehr.report_template enable row level security;
-
 
 -- Row level security permissions --
 set local jwt.claims.a to 1;
