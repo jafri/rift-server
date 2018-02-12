@@ -11,7 +11,7 @@ module.exports = function(app) {
   db.schema.withSchema('ehr').hasTable('patients').then(function(exists) {
     if (!exists) {
       createTable('patients', table => {
-        table.increments('id').primary();
+        table.uuid('patient_id').defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
         table.string('first_name', 100).notNullable();
         table.string('last_name', 100).notNullable();
         table.string('middle_name', 100);
@@ -27,7 +27,7 @@ module.exports = function(app) {
   db.schema.withSchema('ehr').hasTable('patients').then(function(exists) {
     if (!exists) {
       db.schema.withSchema('ehr').createTable('patient_reports', table => {
-        table.increments('id').primary();
+        table.uuid('patient_report_id').defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
         table.string('report_type');
         table.string('patient_id').references('patient_id').inTable('patients');
         table.string('physician_id').references('physician_id').inTable('physicians');
@@ -38,7 +38,8 @@ module.exports = function(app) {
     }
   });
 
-  knex.schema.withSchema('ehr').hasTable('physicians').then(function(exists) {
+  // Create the Physicians Table
+  db.schema.withSchema('ehr').hasTable('physicians').then(function(exists) {
     if (!exists) {
       return knex.schema.withSchema('ehr').createTable('physicians', function(table) {
         table.uuid('physician_id').defaultTo(knex.raw('uuid_generate_v1mc()')).primary();
@@ -51,7 +52,8 @@ module.exports = function(app) {
     }
   });
 
-  knex.schema.withSchema('ehr').hasTable('physician_logins').then(function(exists) {
+  // Create the Physicians Login Table
+  db.schema.withSchema('ehr').hasTable('physician_logins').then(function(exists) {
     if (!exists) {
       return knex.schema.withSchema('ehr').createTable('physician_logins', function(table) {
         table.string('username', 100).primary().notNullable();
@@ -61,8 +63,6 @@ module.exports = function(app) {
       });
     }
   });
-
-
 
   app.set('db', db);
 };
