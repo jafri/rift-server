@@ -1,153 +1,67 @@
-# Express.js with Babel Boilerplate
+# feathers-chat
 
-[![Code Climate](https://codeclimate.com/github/vmasto/express-babel/badges/gpa.svg)](https://codeclimate.com/github/vmasto/express-babel)
-[![Dependencies Status](https://david-dm.org/vmasto/express-babel/status.svg)](https://david-dm.org/vmasto/express-babel)
-[![Dev Dependencies Status](https://david-dm.org/vmasto/express-babel/dev-status.svg)](https://david-dm.org/vmasto/express-babel)
-[![NSP Status](https://nodesecurity.io/orgs/vmasto/projects/d8089487-4f0e-4f69-abb1-938c6de1e6a7/badge)](https://nodesecurity.io/orgs/vmasto/projects/d8089487-4f0e-4f69-abb1-938c6de1e6a7)
+[![Greenkeeper badge](https://badges.greenkeeper.io/feathersjs/feathers-chat.svg)](https://greenkeeper.io/)
+[![Build Status](https://img.shields.io/travis/feathersjs/feathers-chat/master.svg)](https://travis-ci.org/feathersjs/feathers-chat)
+[![Dependency Status](https://img.shields.io/david/feathersjs/feathers-chat.svg)](https://david-dm.org/feathersjs/feathers-chat)
 
-A mostly unopinionated starter project for using Babel and ES2017+ features in a Node.js server environment as well as providing linting and testing solutions. It provides the setup for compiling, linting and testing your code but doesn't make any further assumptions on how your project should be structured.
+> A Feathers real-time chat application
 
-It's a small improvement over [Babel's official approach](https://github.com/babel/example-node-server) and [express-generator](https://expressjs.com/en/starter/generator.html).
+> __Important:__ This repository requires Node v8.0.0 or later.
 
-Make sure you read the FAQ for more details and info.
+## About
 
-### Features:
-- [Express.js](https://expressjs.com/) as the web framework.
-- ES2017+ support with [Babel](https://babeljs.io/).
-- Automatic polyfill requires based on environment with [babel-preset-env](https://github.com/babel/babel-preset-env).
-- Linting with [ESLint](http://eslint.org/).
-- Testing with [Jest](https://facebook.github.io/jest/).
-- [Quick deployment guide](DEPLOYMENT.md) for Heroku, AWS Elastic Beanstalk, and App Engine.
+This project uses [Feathers](http://feathersjs.com). An open source web framework for building modern real-time applications. It provides a chat API created in [this guide](https://docs.feathersjs.com/guides/chat/readme.html) and a frontend in plain JavaScript and jQuery.
 
-## Getting started
+Other chat frontends can be found at:
 
-```sh
-# Clone the project
-git clone git@github.com:vmasto/express-babel.git
-cd express-babel
+- [feathersjs-ecosystem/feathers-chat-react](https://github.com/feathersjs-ecosystem/feathers-chat-react)
+- [feathersjs-ecosystem/feathers-react-native-chat](https://github.com/feathersjs-ecosystem/feathers-react-native-chat)
+- [feathersjs-ecosystem/feathers-chat-angular](https://github.com/feathersjs-ecosystem/feathers-chat-angular)
+- [feathers-plus/feathers-chat-vuex](https://github.com/feathers-plus/feathers-chat-vuex)
 
-# Make it your own
-rm -rf .git && git init && npm init
+## Getting Started
 
-# Install dependencies
-npm install
+Getting up and running is as easy as 1, 2, 3.
 
-# or if you're using Yarn
-yarn
-```
-Then you can begin development:
+1. Make sure you have [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
+2. Install your dependencies
 
-```sh
-# yarn
-yarn run dev
+    ```
+    cd path/to/feathers-chat
+    npm install
+    ```
 
-# npm
-npm run dev
-```
+3. Start your app
 
-This will launch a [nodemon](https://nodemon.io/) process for automatic server restarts when your code changes.
+    ```
+    npm start
+    ```
 
-### Testing
+4. Goto to browser and go to [localhost:3030/vanilla](http://localhost:3030/vanilla/)
 
-Testing is powered by [Jest](https://facebook.github.io/jest/). This project also uses [supertest](https://github.com/visionmedia/supertest) for demonstrating a simple routing smoke test suite. Feel free to remove supertest entirely if you don't wish to use it.
+## Testing
 
-Start the test runner in watch mode with:
+Simply run `npm test` and all your tests in the `test/` directory will be run.
 
-```sh
-# yarn
-yarn test
+## Scaffolding
 
-# npm
-npm test
-```
-
-You can also generate coverage with:
-
-```sh
-# yarn
-yarn test --coverage
-
-# npm
-npm test --coverage
-```
-
-### Linting
-
-Linting is set up using [ESLint](http://eslint.org/). It uses ESLint's default [eslint:recommended](https://github.com/eslint/eslint/blob/master/conf/eslint.json) rules. Feel free to use your own rules and/or extend another popular linting config (e.g. [airbnb's](https://www.npmjs.com/package/eslint-config-airbnb) or [standard](https://github.com/feross/eslint-config-standard)).
-
-Begin linting in watch mode with:
-
-```sh
-# yarn
-yarn run lint
-
-# npm
-npm run lint
-```
-
-To begin linting and start the server simultaneously, edit the `package.json` like this:
+Feathers has a powerful command line interface. Here are a few things it can do:
 
 ```
-"dev": "nodemon src/index.js --exec \"node -r dotenv/config -r babel-register\" | npm run lint"
+$ npm install -g feathers-cli             # Install Feathers CLI
+
+$ feathers generate service               # Generate a new Service
+$ feathers generate hook                  # Generate a new Hook
+$ feathers generate model                 # Generate a new Model
+$ feathers help                           # Show all commands
 ```
 
-### Environmental variables in development
+## Help
 
-The project uses [dotenv](https://www.npmjs.com/package/dotenv) for setting environmental variables during development. Simply copy `.env.example`, rename it to `.env` and add your env vars as you see fit. 
-
-It is **strongly** recommended **never** to check in your .env file to version control. It should only include environment-specific values such as database passwords or API keys used in development. Your production env variables should be different and be set differently depending on your hosting solution. `dotenv` is only for development.
-
-### Deployment
-
-Deployment is specific to hosting platform/provider but generally:
-
-```sh
-# yarn
-yarn run build
-
-# npm
-npm run build
-```
-
-will compile your `src` into `/dist`, and 
-
-```sh
-# yarn
-yarn start
-
-# npm
-npm start
-```
-
-will run `build` (via the `prestart` hook) and start the compiled application from the `/dist` folder.
-
-The last command is generally what most hosting providers use to start your application when deployed, so it should take care of everything.
-
-You can find small guides for Heroku, App Engine and AWS in [the deployment](DEPLOYMENT.md) document.
-
-## FAQ
-
-**Where is all the configuration for ESLint, Jest and Babel?**
-
-In `package.json`. Feel free to extract them in separate respective config files if you like.
-
-**Why are you using `babel-register` instead of `babel-node`?**
-
-`babel-node` contains a small "trap", it loads Babel's [polyfill](https://babeljs.io/docs/usage/polyfill/) by default. This means that if you use something that needs to be polyfilled, it'll work just fine in development (because `babel-node` polyfills it automatically) but it'll break in production because it needs to be explicitely included in Babel's CLI which handles the final build.
-
-In order to avoid such confusions, `babel-register` is a more sensible approach in keeping the development and production runtimes equal. By using [babel-preset-env](https://github.com/babel/babel-preset-env) only code that's not supported by the running environment is transpiled and any polyfills required are automatically inserted.
-
-**Should I use this?**
-
-Full disclosure: If you have to ask perhaps you should reconsider. There is some debate on whether to use Babel-transpiled code on the server or not. Personally, I think it's fine and I've found this setup to be a sensible approach in doing so. That said, I'd suggest to take anything you read online with a grain of salt and refrain from blindly using boilerplates without first investigating personally.
-
-Node is very rapidly converging with the latest ECMAScript specification, and there's mostly full native support for ES2015 and ES2016. The need to transpile on the server is way smaller nowadays, albeit the language is constantly improving and transpiling will probably always be a part of our workflow. At the time of this writing the main benefits are mainly ES6 module syntax and async/await without flags.
-
-In any case, you can simply remove transpilation and keep everything else that this kit has to offer.
-
-If you see anything that needs improvement feel free to open an issue for discussion!
-
-You can also find me on twitter at [@vmasto](https://twitter.com/vmasto).
+For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
 
 ## License
-MIT License. See the [LICENSE](LICENSE) file.
+
+Copyright (c) 2017
+
+Licensed under the [MIT license](LICENSE).
