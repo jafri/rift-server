@@ -1,5 +1,6 @@
 const knex = require('knex');
 
+
 module.exports = function(app) {
   // Database connector
   const db = knex(app.get("database"));
@@ -8,10 +9,10 @@ module.exports = function(app) {
   // db.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
 
   // Create the Physicians Table
-  db.schema.withSchema('ehr').hasTable('physicians').then(function(exists) {
+  db.schema.hasTable('physicians').then(function(exists) {
     if (!exists) {
-      return db.schema.withSchema('ehr').createTable('physicians', function(table) {
-        table.uuid('physician_id').defaultTo(db.raw('uuid_generate_v1mc()')).primary();
+      return db.schema.createTable('physicians', function(table) {
+        table.uuid('id').defaultTo(db.raw('uuid_generate_v1mc()')).primary();
         table.string('first_name', 100).notNullable();
         table.string('last_name', 100).notNullable();
         table.string('middle_name', 100);
@@ -22,22 +23,22 @@ module.exports = function(app) {
   });
 
   // Create the Physicians Login Table
-  db.schema.withSchema('ehr').hasTable('physician_logins').then(function(exists) {
+  db.schema.hasTable('physicianLogins').then(function(exists) {
     if (!exists) {
-      return db.schema.withSchema('ehr').createTable('physician_logins', function(table) {
+      return db.schema.createTable('physicianLogins', function(table) {
         table.string('username', 100).primary().notNullable();
         table.string('password', 100).notNullable();
-        table.uuid('physician_id').defaultTo(db.raw('uuid_generate_v1mc()')).references('physician_id').inTable('physicians');
+        table.uuid('id').defaultTo(db.raw('uuid_generate_v1mc()')).references('id').inTable('physicians');
         table.timestamp('created_at').defaultTo(db.fn.now());
       });
     }
   });
 
   // Create the Patients Table
-  db.schema.withSchema('ehr').hasTable('patients').then(function(exists) {
+  db.schema.hasTable('patients').then(function(exists) {
     if (!exists) {
-      return db.schema.withSchema('ehr').createTable('patients', table => {
-        table.uuid('patient_id').defaultTo(db.raw('uuid_generate_v1mc()')).primary();
+      return db.schema.createTable('patients', table => {
+        table.uuid('id').defaultTo(db.raw('uuid_generate_v1mc()')).primary();
         table.string('first_name', 100).notNullable();
         table.string('last_name', 100).notNullable();
         table.string('middle_name', 100);
@@ -50,13 +51,13 @@ module.exports = function(app) {
   });
 
   // Create the Patient Records Table
-  db.schema.withSchema('ehr').hasTable('patient_reports').then(function(exists) {
+  db.schema.hasTable('patientReports').then(function(exists) {
     if (!exists) {
-      return db.schema.withSchema('ehr').createTable('patient_reports', table => {
-        table.uuid('patient_report_id').defaultTo(db.raw('uuid_generate_v1mc()')).primary();
+      return db.schema.createTable('patientReports', table => {
+        table.uuid('id').defaultTo(db.raw('uuid_generate_v1mc()')).primary();
         table.string('report_type');
-        table.string('patient_id').references('patient_id').inTable('patients');
-        table.string('physician_id').references('physician_id').inTable('physicians');
+        table.uuid('patient_id').references('id').inTable('patients');
+        table.uuid('physician_id').references('id').inTable('physicians');
         table.jsonb('form_json');
         table.string('password');
         table.timestamp('created_at').defaultTo(db.fn.now())

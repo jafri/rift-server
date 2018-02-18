@@ -23,12 +23,12 @@
       "local"
     ],
     "path": "/authentication",
-    "service": "physicians",
+    "service": "physicianLogins",
     "jwt": {
       "header": {
         "typ": "access"
       },
-      "audience": "https://yourdomain.com",
+      "audience": "https://anofron.com",
       "subject": "anonymous",
       "issuer": "feathers",
       "algorithm": "HS256",
