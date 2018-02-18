@@ -4,13 +4,13 @@ const { hashPassword, protect } = require('@feathersjs/authentication-local').ho
 
 module.exports = {
   before: {
-    all: [],
-    find: [ authenticate('jwt') ],
-    get: [ authenticate('jwt') ],
-    create: [ hashPassword() ],
-    update: [ hashPassword(), authenticate('jwt') ],
-    patch: [ hashPassword(), authenticate('jwt') ],
-    remove: [ authenticate('jwt') ]
+    all: [authenticate('jwt')],
+    find: [],
+    get: [],
+    create: [],
+    update: [],
+    patch: [],
+    remove: []
   },
 
   after: {
