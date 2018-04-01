@@ -11,15 +11,28 @@ const socketio = require('@feathersjs/socketio');
 const middleware = require('./middleware');
 const services = require('./services');
 const appHooks = require('./app.hooks');
-const channels = require('./channels');
 
 const authentication = require('./authentication');
-const database = require('./database')
 
+// Start app
 const app = express(feathers());
+app.use(express.errorHandler())
 
 // Load app configuration
 app.configure(configuration());
+
+// Database
+const mysql = require('mysql2');
+
+let db = mysql.createPool({
+    host     : "localhost",
+    port     : 3306,
+    user     : "cpsc471",
+    password : "q4x79YN6bit0sE6oJuI8",
+    database : "project_rift"
+});
+
+app.set('db', db)
 
 // Enable CORS, security, compression, favicon and body parsing
 app.use(cors());
@@ -32,16 +45,12 @@ app.use(express.urlencoded({ extended: true }));
 app.configure(express.rest());
 app.configure(socketio());
 
-// Configure the DATABASE
-app.configure(database)
-
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
 app.configure(authentication);
+
 // Set up our services (see `services/index.js`)
 app.configure(services);
-// Set up event channels (see channels.js)
-app.configure(channels);
 
 // Configure a middleware for the error handler
 app.use(express.errorHandler({ logger }));
