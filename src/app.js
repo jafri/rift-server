@@ -31,7 +31,7 @@ let db = mysql.createPool({
     password : "q4x79YN6bit0sE6oJuI8",
     database : "project_rift"
 });
-
+db.query("SET time_zone = '+00:00';")
 app.set('db', db)
 
 // Enable CORS, security, compression, favicon and body parsing
