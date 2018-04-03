@@ -13,8 +13,9 @@ server.on('listening', async () => {
 
   // TODO Testing only
   console.log("TESTING")
-  //let syed = await app.service("User").remove('sye')
-  //let syed = await app.service("User").create({Username: 'kalum', Password: '33'})
-  
+  let removed = await app.service("Product").remove('BTC')
+  console.log(removed)
+  let product = await app.service("Product").create({Ticker: 'BTC', Name: 'Bitcoin'})
+  console.log(product)
   //console.log(syed)
 });
