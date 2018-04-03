@@ -13,9 +13,10 @@ server.on('listening', async () => {
 
   // TODO Testing only
   console.log("TESTING")
+
   let removed = await app.service("Product").remove('BTC')
   console.log(removed)
+
   let product = await app.service("Product").create({Ticker: 'BTC', Name: 'Bitcoin'})
   console.log(product)
-  //console.log(syed)
 });

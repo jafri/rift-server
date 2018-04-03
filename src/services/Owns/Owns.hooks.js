@@ -11,7 +11,7 @@ module.exports = {
     all: [],
     find: [authenticate(['jwt-admin', 'jwt-user'])],
     get: [authenticate(['jwt-admin', 'jwt-user'])],
-    create: [],
+    create: [authenticate(['jwt-admin', 'jwt-user'])],
     update: [authenticate(['jwt-admin', 'jwt-user'])],
     patch: [authenticate(['jwt-admin', 'jwt-user'])],
     remove: [authenticate(['jwt-admin', 'jwt-user'])]

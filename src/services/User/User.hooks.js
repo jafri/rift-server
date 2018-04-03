@@ -16,7 +16,7 @@ module.exports = {
     create: [hashPassword({passwordField: 'Password'})],
     update: [authenticate('jwt-user')],
     patch: [authenticate('jwt-user')],
-    remove: [authenticate('jwt-user')]
+    remove: [authenticate('jwt-admin')]
   },
 
   after: {

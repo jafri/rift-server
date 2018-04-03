@@ -9,12 +9,12 @@ async function test(context) {
 module.exports = {
   before: {
     all: [],
-    find: [authenticate(['jwt-admin', 'jwt-user'])],
-    get: [authenticate(['jwt-admin', 'jwt-user'])],
-    create: [],
-    update: [authenticate(['jwt-admin', 'jwt-user'])],
-    patch: [authenticate(['jwt-admin', 'jwt-user'])],
-    remove: [authenticate(['jwt-admin', 'jwt-user'])]
+    find: [],
+    get: [],
+    create: [authenticate(['jwt-admin'])],
+    update: [authenticate(['jwt-admin'])],
+    patch: [authenticate(['jwt-admin'])],
+    remove: [authenticate(['jwt-admin'])]
   },
 
   after: {
